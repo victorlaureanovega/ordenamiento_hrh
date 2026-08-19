@@ -1,8 +1,8 @@
 # Introducción
 
-No busco insinuar que descubrí este algoritmo que llamo ordenamiento HRH; tan sólo deseo presentar el breve y escueto análisis que pude realizar con lo poco que sé de algoritmia.
+Alguien más debió descubrir este algoritmo que llamo «ordenamiento HRH»; me limito a ofrecer el breve estudio que pude realizar con lo poco que sé de algoritmia.
 
-El ordenamiento HRH es bastante similar al ordenamiento por selección, con la diferencia de que el primero identifica simultáneamente el menor y el mayor elemento en cada iteración, llevándolos a los extremos del arreglo. Quizás el siguiente pseudocódigo ayude a comprenderlo un poco mejor:
+El ordenamiento HRH es bastante parecido al ordenamiento por selección (OS), salvo que, además de buscar el menor elemento de un arreglo, también busca el mayor:
 
     hrh_sort(A):
     {
@@ -11,13 +11,13 @@ El ordenamiento HRH es bastante similar al ordenamiento por selección, con la d
 
         Mientras a <= b
         {
-            minimo = a
-            maximo = a
+            minimo = máximo = a
 
             Desde i = a hasta i = b
             {
                 Si A[i] < A[minimo]:
                     minimo = i
+
                 Si A[i] > A[maximo]:
                     maximo = i
             }
@@ -34,21 +34,21 @@ El ordenamiento HRH es bastante similar al ordenamiento por selección, con la d
         }
     }
 
-Para determinar el número de comparaciones realizadas para identificar los valores mínimo y máximo, debemos notar que en cada iteración del bucle principal se evalúan todos los elementos del subarreglo $A[a:b]$ actual, reduciendo su tamaño $n$ en dos elementos por iteración ($a$ avanza hacia la derecha y $b$ hacia la izquierda). Esto da lugar a una de dos progresiones aritméticas decrecientes.
+Para determinar el número de comparaciones necesarias para identificar estos elementos debemos notar que, tras cada iteración del bucle principal, el arreglo reduce su tamaño $n$ dos elementos ($a$ avanza y $b$ retrocede).
 
 En el caso de $n$ par, el número de comparaciones $S_1$ puede representarse de la siguiente manera:
 
 $$
-S_1=n+(n-2)+(n-4)+...+6+4+2.
+S_1=n+(n-2)+(n-4)+...+6+4+2,
 $$
 
-En esta progresión, la fórmula del k-ésimo término es:
+donde el k-ésimo elemento es:
 
 $$
 a_k=n-2(k-1).
 $$
 
-Buscamos encontrar el número de términos $k$ sumados, o lo que es lo mismo, el número de iteraciones completas del bucle cuando $a_k = 2$. Tras el despeje, obtenemos que $k=\frac{n}{2}$.
+Buscamos encontrar el número de términos sumados, o, lo que es lo mismo, el número de iteraciones completas del bucle cuando $a_k = 2$. Tras el despeje obtenemos que $k=\frac{n}{2}$.
 
 Recordemos que la suma de una progresión aritmética se calcula con la fórmula:
 
@@ -62,25 +62,25 @@ $$
 S_1=\frac{\frac{n}{2}(n+2)}{2}=\frac{n(n+2)}{4}.
 $$
 
-En el caso de $n$ impar, la progresión es bastante parecida, con la diferencia de que el último término será el número 1:
+En el caso de $n$ impar la progresión será casi la misma, con la diferencia de que el último término será 1:
 
 $$
 S_2=n+(n-2)+(n-4)+...+1.
 $$
 
-La fórmula para el k-ésimo elemento sigue siendo:
+El k-ésimo elemento sigue siendo:
 
 $$
-a_k=n-2(k-1),
+a_k=n-2(k-1).
 $$
 
-aunque ahora consideraremos $a_k=1$, de donde se sigue que $k=\frac{n+1}{2}$ y que la progresión aritmética equivale a:
+Nos interesa conocer el número de iteraciones completas cuando $a_k = 1$, así que $k=\frac{n+1}{2}$ y la progresión se convierte en:
 
 $$
 S_2=\frac{(n+1)^2}{4}.
 $$
 
-Así, el número total de comparaciones realizadas por el algoritmo HRH puede definirse con la siguiente función $h(n)$:
+Así, el número de comparaciones realizadas por HRH está dado por la siguiente función $h(n)$:
 
 $$
 h(n) =
@@ -90,11 +90,7 @@ h(n) =
 \end{cases}
 $$
 
-<br /><br />
-
-Por último, con base en el análisis anterior, determinaremos su complejidad temporal.
-
-Notemos que ambos casos de $h(n)$ tienen un término dominante $\frac{n^2}{4}$. Para verificar formalmente la relación asintótica, tomaremos $f(n)=\frac{n^2}{4}$ y $g(n)=n^2$ como referencia. A continuación evaluaremos:
+En ambos casos hay un término dominante $f(n)=\frac{n^2}{4}$. Para calcular la complejidad temporal de HRH tomaremos como referencia $g(n)=n^2$ y evaluaremos:
 
 $$
 \lim_{n\rightarrow\infty}\frac{f(n)}{g(n)},
@@ -106,14 +102,14 @@ $$
 \lim_{n\rightarrow\infty}\frac{n^2}{4n^2}=\frac{1}{4}.
 $$
 
-Ya que el resultado del límite es un número real finito, concluimos que $h(n) \in \Theta(n^2)$.
+Siendo el resultado un número real finito, concluimos que $h(n) \in \Theta(n^2)$.
 
-De acuerdo con el análisis anterior, el HRH reduce las comparaciones realizadas por el ordenamiento por selección estándar, aunque ambos comparten la misma complejidad temporal cuadrática; además, la diferencia práctica entre los algoritmos es mínima, lo que probablemente se deba a cómo se realizan las comparaciones en el primero.
+HRH reduce el número de comparaciones realizadas por OS, aunque ambos pertenecen al mismo orden exacto. La diferencia práctica entre ambos algoritmos es mínima, lo que probablemente se deba a cómo se realizan las comparaciones en HRH.
 
-Eso es todo. Quizás haya algo valioso en este texto o en el algoritmo; quizás pueda encontrarse en ellos el tímido asombro con el que hace algunos meses comencé a trabajar en esto, acaso valioso por su lentitud, acaso valioso por su brevedad.
+Quizás pueda encontrarse en este texto o en el algoritmo el tímido asombro con el que hace unos meses comencé este examen, acaso valioso por su lentitud, acaso valioso por su brevedad.
 
-<div style="font-style: italic; text-align: right;">
+<br />
+
 V. L. V.
 
 Zapopan, 23 de diciembre de 2024
-</div>
